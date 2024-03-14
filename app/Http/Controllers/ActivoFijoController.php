@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ActivoFijoRequest;
 use App\Http\Resources\ActivoFijoCollection;
 use App\Http\Resources\ActivoFijoResource;
 use App\Models\ActivoFijo;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class ActivoFijoController extends Controller
 {
@@ -15,7 +15,7 @@ class ActivoFijoController extends Controller
      */
     public function index()
     {
-        $activosFijos = ActivoFijo::all();
+        $activosFijos = ActivoFijo::orderBy('id_activo_fijo', 'DESC')->paginate(10);
         return ActivoFijoCollection::make($activosFijos);
 
     }
@@ -23,67 +23,43 @@ class ActivoFijoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ActivoFijoRequest $request)
     {
-        $request->validate([
-            'codigo' => 'required',
-            'tipo_activo_id' => 'required',
-            'descripcion' => 'required'
-        ]);
 
-        DB::table('activos_fijos')->insert([
-            'codigo' => $request->codigo,
-            'tipo_activo_id' => $request->tipo_activo_id,
-            'descripcion' => $request->descripcion,
-        ]);
+        ActivoFijo::create($request->validated());
 
-        return response()->json(["Success" => "Activo Fijo Creado Correctamente"], 201);
+        return response()->json(["Success" => "Activo Fijo Creado Correctamente"], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($activofijo)
+    public function show(ActivoFijo $activofijo)
     {
-        $activo = DB::table('activos_fijos')->where('id_activo_fijo', $activofijo)->first();
-        return new ActivoFijoResource($activo);
+        return new ActivoFijoResource($activofijo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $activofijo)
+    public function update(ActivoFijoRequest $request, ActivoFijo $activofijo)
     {
-        $request->validate([
-            'codigo' => 'required',
-            'tipo_activo_id' => 'required',
-            'descripcion' => 'required'
-        ]);
-
-        DB::table('activos_fijos')->
-        where('id_activo_fijo', $activofijo)->
-        update([
-            'codigo' => $request->codigo,
-            'tipo_activo_id' => $request->tipo_activo_id,
-            'descripcion' => $request->descripcion,
-        ]);
+        $activofijo->update($request->validated());
 
         return response()->json([
             'message' => 'Activo Fijo Actualizado'
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($activofijo)
+    public function destroy(ActivoFijo $activofijo)
     {
-        DB::table('activos_fijos')->
-            where('id_activo_fijo', $activofijo)->
-            delete();
-        
+        $activofijo->delete();
+
         return response()->json([
             'message' => 'Activo Fijo Eliminado'
-        ], 204);
+        ], Response::HTTP_NO_CONTENT);
     }
 }

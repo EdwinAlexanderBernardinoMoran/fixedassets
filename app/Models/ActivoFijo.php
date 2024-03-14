@@ -11,4 +11,9 @@ class ActivoFijo extends Model
 
     protected $table = 'activos_fijos';
 
+    protected $primaryKey = 'id_activo_fijo';
+    public $incrementing = true;
+
+    public $timestamps = false;
+
 }
