@@ -21,7 +21,7 @@ class TipoActivoResource extends JsonResource
                 'nombre' => $this->resource->nombre,
             ],
             'links' => [
-                'self' => route('tipoactivo.show', $this->resource->id_tipo_activo)
+                'self' => route('tiposactivos.show', $this->resource->id_tipo_activo)
             ]
         ];
     }

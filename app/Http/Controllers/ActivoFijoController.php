@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ActivoFijoRequest;
 use App\Http\Resources\ActivoFijoCollection;
 use App\Http\Resources\ActivoFijoResource;
+use App\Http\Resources\ShowResources\ShowActivoFijoResource;
 use App\Models\ActivoFijo;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +50,7 @@ class ActivoFijoController extends Controller
      */
     public function show(ActivoFijo $activofijo)
     {
-        return new ActivoFijoResource($activofijo);
+        return new ShowActivoFijoResource($activofijo);
     }
 
     /**

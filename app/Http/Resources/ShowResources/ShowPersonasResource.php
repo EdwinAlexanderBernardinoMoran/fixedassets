@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\ShowResources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PersonasResource extends JsonResource
+class ShowPersonasResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,14 +15,14 @@ class PersonasResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => 'personas',
-            'id_persona' => $this->resource->id_persona,
+            'type' => 'Personas',
+            'id' => $this->resource->id_persona,
             'attributes' => [
                 'nombres' => $this->resource->nombres,
                 'n_carnet' => $this->resource->n_carnet,
-                'area_de_trabajo' => $this->areatrabajo->nombre,
+                'areas_trabajo_id' => $this->resource->areas_trabajo_id,
             ],
-            'links' => [
+            'link' => [
                 'self' => route('personas.show', $this->resource->id_persona)
             ]
         ];

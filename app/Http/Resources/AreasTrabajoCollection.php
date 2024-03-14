@@ -17,7 +17,7 @@ class AreasTrabajoCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'links' => [
-              'self' => route('areatrabajo.index')
+              'self' => route('areatrabajos.index')
             ]
         ];
     }

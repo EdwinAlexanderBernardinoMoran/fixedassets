@@ -4,19 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AsignacionCollection;
 use App\Http\Resources\AsignacionResource;
+use App\Http\Resources\ShowResources\ShowAsignacionResource;
 use App\Models\Asignacion;
+use App\Models\HistorialAsignacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class AsignacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $asignacion = Asignacion::all();
-        return AsignacionCollection::make($asignacion);
+
+    public function consultInformation(Request $request, Asignacion $asignacion){
+        $query = $asignacion->newQuery();
+
+        if ($request->personas) {
+            $query->whereHas('persona', function($q) use ($request){
+                $q->where('nombres', 'LIKE', "%{$request->personas}%");
+            });
+        }
+
+        if ($request->areatrabajo) {
+            $query->whereHas('persona.areatrabajo', function ($q) use ($request) {
+                $q->where('nombre', 'LIKE', "%{$request->areatrabajo}%");
+            });
+        }
+
+        if ($request->activos) {
+            $query->whereHas('activofijo.tipoactivo', function ($q) use ($request) {
+                $q->where('nombre', 'LIKE', "%{$request->activos}%");
+            });
+        }
+
+        return AsignacionResource::collection($query->get());
     }
 
     /**
@@ -24,7 +46,6 @@ class AsignacionController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'personas_id' => 'required',
             'activos_fijos_id' => 'required',
@@ -32,65 +53,64 @@ class AsignacionController extends Controller
         ]);
 
         try {
-            DB::table('asignaciones')->insert([
+            Asignacion::create([
                 'personas_id' => $request->personas_id,
                 'activos_fijos_id' => $request->activos_fijos_id,
             ]);
 
-            DB::table('historial_asignaciones')->insert([
+            HistorialAsignacion::create([
                 'fecha_asignacion' => $request->fecha_asignacion,
                 'personas_id' => $request->personas_id,
                 'activos_fijos_id' => $request->activos_fijos_id,
             ]);
         } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return response()->json(["Success" => "Asignacion Creada Correctamente"], 201);
+        return response()->json(["Success" => "Asignacion Creada Correctamente"], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($asignacion)
+    public function show(Asignacion $asignacion)
     {
-        $asignacion = DB::table('asignaciones')->where('id_asignaciones', $asignacion)->first();
-        return new AsignacionResource($asignacion);
+        return new ShowAsignacionResource($asignacion);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $asignacion)
+    public function update(Request $request, Asignacion $asignacion)
     {
         $request->validate([
             'personas_id' => 'required',
             'activos_fijos_id' => 'required',
         ]);
 
-        DB::table('asignaciones')->
-            where('id_asignaciones', $asignacion)
-            ->update([
-            'personas_id' => $request->personas_id,
-            'activos_fijos_id' => $request->activos_fijos_id,
-        ]);
+        try {
+            $asignacion->update([
+                'personas_id' => $request->personas_id,
+                'activos_fijos_id' => $request->activos_fijos_id,
+            ]);
 
-        return response()->json([
-            'message' => 'Asignacion Actualizada'
-        ], 200);
+            return response()->json(["Success" => "Asignacion Actualizada Correctamente"], Response::HTTP_OK);
+
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($asignacion)
+    public function destroy(Asignacion $asignacion)
     {
-        DB::table('asignaciones')->
-        where('id_asignaciones', $asignacion)->
-        delete();
-    
+        $asignacion->delete();
+
         return response()->json([
             'message' => 'Asignacion Eliminada'
-        ], 204);
+        ], Response::HTTP_NO_CONTENT);
     }
 }

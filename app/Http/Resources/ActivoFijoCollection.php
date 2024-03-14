@@ -17,7 +17,7 @@ class ActivoFijoCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'links' => [
-              'self' => route('activofijo.index')
+              'self' => route('activosfijos.index')
             ]
         ];
     }

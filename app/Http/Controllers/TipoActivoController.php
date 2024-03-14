@@ -7,6 +7,7 @@ use App\Http\Resources\TipoActivoResource;
 use App\Models\TipoActivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class TipoActivoController extends Controller
 {
@@ -15,7 +16,7 @@ class TipoActivoController extends Controller
      */
     public function index()
     {
-        $tipoActivos = TipoActivo::all();
+        $tipoActivos = TipoActivo::orderBy('id_tipo_activo', 'DESC')->paginate(10);
         return TipoActivoCollection::make($tipoActivos);
     }
 
@@ -24,58 +25,49 @@ class TipoActivoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validation = $request->validate([
             'nombre' => 'required',
         ]);
 
-        DB::table('tipo_activo')->insert([
-            'nombre' => $request->nombre,
-        ]);
+        TipoActivo::create($validation);
 
-        return response()->json(["Success" => "Success"], 201);
+        return response()->json(["Success" => "Tipo De Activo Creado"], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($tipoActivo)
+    public function show(TipoActivo $tipoActivo)
     {
-        $tipoActivo = DB::table('tipo_activo')->where('id_tipo_activo', $tipoActivo)->first();
         return new TipoActivoResource($tipoActivo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $tipoActivo)
+    public function update(Request $request, TipoActivo $tipoActivo)
     {
 
-        $request->validate([
+        $validation = $request->validate([
             'nombre' => 'required',
         ]);
 
-        DB::table('tipo_activo')->
-            where('id_tipo_activo', $tipoActivo)->
-            update([
-            'nombre' => $request->nombre,
-        ]);
+        $tipoActivo->update($validation);
 
         return response()->json([
             'message' => 'Tipo Activo Actualizado'
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($tipoActivo)
+    public function destroy(TipoActivo $tipoActivo)
     {
-        DB::table('tipo_activo')->
-            where('id_tipo_activo', $tipoActivo)->
-            delete();
-        
+        $tipoActivo->delete();
+
         return response()->json([
             'message' => 'Tipo Activo Eliminado'
-        ], 204);
+        ], Response::HTTP_NO_CONTENT);
     }
 }

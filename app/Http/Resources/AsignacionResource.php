@@ -20,12 +20,13 @@ class AsignacionResource extends JsonResource
             'attributes' => [
                 'persona' => $this->persona->nombres,
                 'carnet' => $this->persona->n_carnet,
+                'areadetrabajo' => $this->persona->areatrabajo->nombre,
                 'codigo_de_activo_fijo' => $this->activofijo->codigo,
                 'tipo_de_activo_fijo' => $this->activofijo->tipoactivo->nombre,
                 'descripcion' => $this->activofijo->descripcion,
             ],
             'links' => [
-                'self' => route('asignacion.show', $this->resource->id_asignaciones)
+                'self' => route('asignaciones.show', $this->resource->id_asignaciones)
             ]
         ];
     }

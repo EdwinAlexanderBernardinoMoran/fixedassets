@@ -17,7 +17,7 @@ class HistorialAsignacionCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'links' => [
-              'self' => route('historialasignacion.index')
+              'self' => route('historialasignaciones.index')
             ]
         ];;
     }

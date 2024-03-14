@@ -21,7 +21,7 @@ class AreasTrabajoResource extends JsonResource
                 'nombre' => $this->resource->nombre,
             ],
             'links' => [
-                'self' => route('areatrabajo.index', $this->resource->id_areas_trabajo)
+                'self' => route('areatrabajos.show', $this->resource->id_areas_trabajo)
             ]
         ];
     }

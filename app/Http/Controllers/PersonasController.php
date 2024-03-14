@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PersonasCollection;
 use App\Http\Resources\PersonasResource;
+use App\Http\Resources\ShowResources\ShowPersonasResource;
 use App\Models\Personas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class PersonasController extends Controller
 {
@@ -15,7 +17,7 @@ class PersonasController extends Controller
      */
     public function index()
     {
-        $personas = Personas::all();
+        $personas = Personas::orderBy('id_persona', 'DESC')->paginate(10);
         return PersonasCollection::make($personas);
     }
 
@@ -24,65 +26,52 @@ class PersonasController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validation = $request->validate([
             'nombres' => 'required',
             'n_carnet' => 'required',
             'areas_trabajo_id' => 'required'
         ]);
 
-        DB::table('personas')->insert([
-            'nombres' => $request->nombres,
-            'n_carnet' => $request->n_carnet,
-            'areas_trabajo_id' => $request->areas_trabajo_id,
-        ]);
+        Personas::create($validation);
 
-        return response()->json(["Success" => "Success"], 201);
+        return response()->json(["Success" => "Persona Creada"], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($persona)
+    public function show(Personas $persona)
     {
-        $persona = DB::table('personas')->where('id_persona', $persona)->first();
-        return new PersonasResource($persona);
+        return new ShowPersonasResource($persona);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $persona)
+    public function update(Request $request, Personas $persona)
     {
-        $request->validate([
+        $validation = $request->validate([
             'nombres' => 'required',
             'n_carnet' => 'required',
             'areas_trabajo_id' => 'required'
         ]);
 
-        DB::table('personas')->
-            where('id_persona', $persona)->
-            update([
-            'nombres' => $request->nombres,
-            'n_carnet' => $request->n_carnet,
-            'areas_trabajo_id' => $request->areas_trabajo_id,
-        ]);
+        $persona->update($validation);
 
         return response()->json([
             'message' => 'Persona Actualizada'
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($persona)
+    public function destroy(Personas $persona)
     {
-        DB::table('personas')->
-            where('id_persona', $persona)->
-            delete();
-        
+        $persona->delete();
+
         return response()->json([
             'message' => 'Persona Eliminada'
-        ], 204);
+        ], Response::HTTP_NO_CONTENT);
     }
 }

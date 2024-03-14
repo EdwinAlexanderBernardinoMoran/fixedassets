@@ -26,7 +26,7 @@ class HistorialAsignacionResource extends JsonResource
                 'fecha_asignacion' => $this->resource->fecha_asignacion,
             ],
             'links' => [
-                'self' => route('historialasignacion.show', $this->resource->id_historial_asignaciones)
+                'self' => route('historialasignaciones.show', $this->resource->id_historial_asignaciones)
             ]
         ];
     }

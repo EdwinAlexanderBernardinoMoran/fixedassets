@@ -15,40 +15,15 @@ class HistorialAsignacionController extends Controller
      */
     public function index()
     {
-        $asignacion = HistorialAsignacion::all();
+        $asignacion = HistorialAsignacion::orderBy('id_historial_asignaciones', 'DESC')->paginate(10);
         return HistorialAsignacionCollection::make($asignacion);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($historial)
+    public function show(HistorialAsignacion $historial)
     {
-        $persona = DB::table('historial_asignaciones')->where('id_historial_asignaciones', $historial)->first();
-        return new HistorialAsignacionResource($persona);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, HistorialAsignacion $historialAsignacion)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(HistorialAsignacion $historialAsignacion)
-    {
-        //
+        return new HistorialAsignacionResource($historial);
     }
 }

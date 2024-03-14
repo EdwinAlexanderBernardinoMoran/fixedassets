@@ -11,7 +11,7 @@ class Asignacion extends Model
 
     protected $table = 'asignaciones';
 
-    protected $primaryKey = 'id_activo_fijo';
+    protected $primaryKey = 'id_asignaciones';
     public $incrementing = true;
 
     public $timestamps = false;

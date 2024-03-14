@@ -6,7 +6,7 @@ use App\Http\Resources\AreasTrabajoCollection;
 use App\Http\Resources\AreasTrabajoResource;
 use App\Models\AreasTrabajo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class AreasTrabajoController extends Controller
 {
@@ -15,9 +15,9 @@ class AreasTrabajoController extends Controller
      */
     public function index()
     {
-        $areasTrabajo = AreasTrabajo::all();
+        $areasTrabajo = AreasTrabajo::orderBy('id_areas_trabajo', 'DESC')->paginate(10);
         return AreasTrabajoCollection::make($areasTrabajo);
-        
+
     }
 
     /**
@@ -25,57 +25,48 @@ class AreasTrabajoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $areatrabajo = $request->validate([
             'nombre' => 'required',
         ]);
 
-        DB::table('areas_trabajo')->insert([
-            'nombre' => $request->nombre,
-        ]);
+        AreasTrabajo::create($areatrabajo);
 
-        return response()->json(["Success" => "Success"], 201);
+        return response()->json(["success" => "Area de trabajo creada"], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($areaTrabajo)
+    public function show(AreasTrabajo $areaTrabajo)
     {
-        $areasTrabajo = DB::table('areas_trabajo')->where('id_areas_trabajo', $areaTrabajo)->first();
-        return new AreasTrabajoResource($areasTrabajo);
+        return new AreasTrabajoResource($areaTrabajo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $areaTrabajo)
+    public function update(Request $request, AreasTrabajo $areaTrabajo)
     {
-        $request->validate([
+        $validation = $request->validate([
             'nombre' => 'required',
         ]);
 
-        DB::table('areas_trabajo')->
-            where('id_areas_trabajo', $areaTrabajo)->
-            update([
-            'nombre' => $request->nombre,
-        ]);
+        $areaTrabajo->update($validation);
 
         return response()->json([
             'message' => 'Area De Trabajo Actualizado'
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($areaTrabajo)
+    public function destroy(AreasTrabajo $areaTrabajo)
     {
-        DB::table('areas_trabajo')->
-            where('id_areas_trabajo', $areaTrabajo)->
-            delete();
-        
+        $areaTrabajo->delete();
+
         return response()->json([
             'message' => 'Areas De Trabajo Eliminado'
-        ], 204);
+        ], Response::HTTP_NO_CONTENT);
     }
 }

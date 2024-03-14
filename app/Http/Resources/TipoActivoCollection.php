@@ -17,7 +17,7 @@ class TipoActivoCollection extends ResourceCollection
         return [
             'data' => $this->collection,
             'links' => [
-              'self' => route('tipoactivo.index')
+              'self' => route('tiposactivos.index')
             ]
         ];
     }
