@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
+
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,4 +30,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+{
+    // if ($exception instanceof ModelNotFoundException) {
+    //     return response()->json(['error' => 'Recurso no encontrado'], 404);
+    // }
+
+    if ($exception instanceof ModelNotFoundException) {
+        $modelName = class_basename($exception->getModel());
+        $message = "El Recurso de ". ucfirst($modelName) . ' no fue encontrado';
+        return response()->json(['error' => $message], Response::HTTP_NOT_FOUND);
+    }
+
+    return parent::render($request, $exception);
+}
 }

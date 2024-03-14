@@ -58,6 +58,7 @@ Route::get('activosfijos/{activofijo}', [ActivoFijoController::class, 'show'])->
 Route::post('activosfijos', [ActivoFijoController::class, 'store'])->name('activofijo.store');
 Route::put('activosfijos/{activofijo}', [ActivoFijoController::class, 'update'])->name('activofijo.update');
 Route::delete('activosfijos/{activofijo}', [ActivoFijoController::class, 'destroy'])->name('activofijo.destroy');
+Route::post('activosfijos/codigo', [ActivoFijoController::class, 'byCodigo'])->name('activofijo.byCodigo');
 
 // Activos Fijos
 Route::get('historialasignacion', [HistorialAsignacionController::class, 'index'])->name('historialasignacion.index');

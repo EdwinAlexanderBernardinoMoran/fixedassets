@@ -6,6 +6,7 @@ use App\Http\Requests\ActivoFijoRequest;
 use App\Http\Resources\ActivoFijoCollection;
 use App\Http\Resources\ActivoFijoResource;
 use App\Models\ActivoFijo;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivoFijoController extends Controller
@@ -18,6 +19,18 @@ class ActivoFijoController extends Controller
         $activosFijos = ActivoFijo::orderBy('id_activo_fijo', 'DESC')->paginate(10);
         return ActivoFijoCollection::make($activosFijos);
 
+    }
+
+    // Busqueda de activo por codigo
+    public function byCodigo(Request $request){
+        $codigo = $request->codigo;
+
+        $activosFijos = ActivoFijo::where('codigo', 'LIKE', "%{$codigo}%")->get();
+
+        if ($activosFijos->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron activos fijos para el código proporcionado'], Response::HTTP_OK);
+        }
+        return ActivoFijoCollection::make($activosFijos);
     }
 
     /**
