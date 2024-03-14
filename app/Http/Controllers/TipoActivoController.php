@@ -37,22 +37,22 @@ class TipoActivoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TipoActivo $tipoActivo)
+    public function show(TipoActivo $tiposactivo)
     {
-        return new TipoActivoResource($tipoActivo);
+        return new TipoActivoResource($tiposactivo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipoActivo $tipoActivo)
+    public function update(Request $request, TipoActivo $tiposactivo)
     {
 
         $validation = $request->validate([
             'nombre' => 'required',
         ]);
 
-        $tipoActivo->update($validation);
+        $tiposactivo->update($validation);
 
         return response()->json([
             'message' => 'Tipo Activo Actualizado'
@@ -62,9 +62,9 @@ class TipoActivoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TipoActivo $tipoActivo)
+    public function destroy(TipoActivo $tiposactivo)
     {
-        $tipoActivo->delete();
+        $tiposactivo->delete();
 
         return response()->json([
             'message' => 'Tipo Activo Eliminado'

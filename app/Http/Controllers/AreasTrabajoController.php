@@ -37,21 +37,21 @@ class AreasTrabajoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AreasTrabajo $areaTrabajo)
+    public function show(AreasTrabajo $areatrabajo)
     {
-        return new AreasTrabajoResource($areaTrabajo);
+        return new AreasTrabajoResource($areatrabajo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AreasTrabajo $areaTrabajo)
+    public function update(Request $request, AreasTrabajo $areatrabajo)
     {
         $validation = $request->validate([
             'nombre' => 'required',
         ]);
 
-        $areaTrabajo->update($validation);
+        $areatrabajo->update($validation);
 
         return response()->json([
             'message' => 'Area De Trabajo Actualizado'
@@ -61,9 +61,9 @@ class AreasTrabajoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AreasTrabajo $areaTrabajo)
+    public function destroy(AreasTrabajo $areatrabajo)
     {
-        $areaTrabajo->delete();
+        $areatrabajo->delete();
 
         return response()->json([
             'message' => 'Areas De Trabajo Eliminado'

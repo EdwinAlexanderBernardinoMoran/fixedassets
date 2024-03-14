@@ -17,7 +17,7 @@ class PersonasController extends Controller
      */
     public function index()
     {
-        $personas = Personas::orderBy('id_persona', 'DESC')->paginate(10);
+        $personas = Personas::with('areatrabajo')->orderBy('id_persona', 'DESC')->paginate(10);
         return PersonasCollection::make($personas);
     }
 

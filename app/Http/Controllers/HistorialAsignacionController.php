@@ -15,7 +15,7 @@ class HistorialAsignacionController extends Controller
      */
     public function index()
     {
-        $asignacion = HistorialAsignacion::orderBy('id_historial_asignaciones', 'DESC')->paginate(10);
+        $asignacion = HistorialAsignacion::with('persona', 'activofijo')->orderBy('id_historial_asignaciones', 'DESC')->paginate(10);
         return HistorialAsignacionCollection::make($asignacion);
     }
 

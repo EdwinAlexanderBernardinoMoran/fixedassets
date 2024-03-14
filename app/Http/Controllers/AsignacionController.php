@@ -73,15 +73,15 @@ class AsignacionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Asignacion $asignacion)
+    public function show(Asignacion $asignacione)
     {
-        return new ShowAsignacionResource($asignacion);
+        return new ShowAsignacionResource($asignacione);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Asignacion $asignacion)
+    public function update(Request $request, Asignacion $asignacione)
     {
         $request->validate([
             'personas_id' => 'required',
@@ -89,7 +89,7 @@ class AsignacionController extends Controller
         ]);
 
         try {
-            $asignacion->update([
+            $asignacione->update([
                 'personas_id' => $request->personas_id,
                 'activos_fijos_id' => $request->activos_fijos_id,
             ]);
@@ -105,9 +105,9 @@ class AsignacionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Asignacion $asignacion)
+    public function destroy(Asignacion $asignacione)
     {
-        $asignacion->delete();
+        $asignacione->delete();
 
         return response()->json([
             'message' => 'Asignacion Eliminada'

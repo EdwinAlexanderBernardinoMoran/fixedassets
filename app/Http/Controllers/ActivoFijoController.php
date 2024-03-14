@@ -17,7 +17,7 @@ class ActivoFijoController extends Controller
      */
     public function index()
     {
-        $activosFijos = ActivoFijo::orderBy('id_activo_fijo', 'DESC')->paginate(10);
+        $activosFijos = ActivoFijo::with('tipoactivo')->orderBy('id_activo_fijo', 'DESC')->paginate(10);
         return ActivoFijoCollection::make($activosFijos);
 
     }
@@ -26,7 +26,7 @@ class ActivoFijoController extends Controller
     public function byCodigo(Request $request){
         $codigo = $request->codigo;
 
-        $activosFijos = ActivoFijo::where('codigo', 'LIKE', "%{$codigo}%")->get();
+        $activosFijos = ActivoFijo::with('tipoactivo')->where('codigo', 'LIKE', "%{$codigo}%")->get();
 
         if ($activosFijos->isEmpty()) {
             return response()->json(['message' => 'No se encontraron activos fijos para el código proporcionado'], Response::HTTP_OK);
@@ -48,17 +48,17 @@ class ActivoFijoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ActivoFijo $activofijo)
+    public function show(ActivoFijo $activosfijo)
     {
-        return new ShowActivoFijoResource($activofijo);
+        return new ShowActivoFijoResource($activosfijo);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ActivoFijoRequest $request, ActivoFijo $activofijo)
+    public function update(ActivoFijoRequest $request, ActivoFijo $activosfijo)
     {
-        $activofijo->update($request->validated());
+        $activosfijo->update($request->validated());
 
         return response()->json([
             'message' => 'Activo Fijo Actualizado'
@@ -68,9 +68,9 @@ class ActivoFijoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ActivoFijo $activofijo)
+    public function destroy(ActivoFijo $activosfijo)
     {
-        $activofijo->delete();
+        $activosfijo->delete();
 
         return response()->json([
             'message' => 'Activo Fijo Eliminado'
