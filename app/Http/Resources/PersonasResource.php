@@ -20,7 +20,7 @@ class PersonasResource extends JsonResource
             'attributes' => [
                 'nombres' => $this->resource->nombres,
                 'n_carnet' => $this->resource->n_carnet,
-                'areas_trabajo_id' => $this->resource->areas_trabajo_id,
+                'area_de_trabajo' => $this->areatrabajo->nombre,
             ],
             'links' => [
                 'self' => route('persona.show', $this->resource->id_persona)

@@ -18,9 +18,12 @@ class HistorialAsignacionResource extends JsonResource
             'type' => 'Historial De Asignacion',
             'id' => $this->resource->id_historial_asignaciones,
             'attributes' => [
+                'personas_id' => $this->persona->nombres,
+                'carnet' => $this->persona->n_carnet,
+                'area_de_trabajo' => $this->persona->areatrabajo->nombre,
+                'codigo_de_activofijo' => $this->activofijo->codigo,
+                'tipo_de_activofijo' => $this->activofijo->tipoactivo->nombre,
                 'fecha_asignacion' => $this->resource->fecha_asignacion,
-                'personas_id' => $this->resource->personas_id,
-                'activos_fijos_id' => $this->resource->activos_fijos_id,
             ],
             'links' => [
                 'self' => route('historialasignacion.show', $this->resource->id_historial_asignaciones)

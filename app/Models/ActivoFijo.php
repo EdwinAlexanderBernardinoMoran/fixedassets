@@ -16,4 +16,13 @@ class ActivoFijo extends Model
 
     public $timestamps = false;
 
+    public function tipoactivo(){
+        return $this->belongsTo(TipoActivo::class, 'tipo_activo_id');
+    }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class);
+    }
+
 }

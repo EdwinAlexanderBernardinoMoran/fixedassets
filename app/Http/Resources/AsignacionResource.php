@@ -18,8 +18,11 @@ class AsignacionResource extends JsonResource
             'type' => 'Asginaciones',
             'id' => $this->resource->id_asignaciones,
             'attributes' => [
-                'persona_id' => $this->resource->personas_id,
-                'activos_fijos_id' => $this->resource->activos_fijos_id,
+                'persona' => $this->persona->nombres,
+                'carnet' => $this->persona->n_carnet,
+                'codigo_de_activo_fijo' => $this->activofijo->codigo,
+                'tipo_de_activo_fijo' => $this->activofijo->tipoactivo->nombre,
+                'descripcion' => $this->activofijo->descripcion,
             ],
             'links' => [
                 'self' => route('asignacion.show', $this->resource->id_asignaciones)

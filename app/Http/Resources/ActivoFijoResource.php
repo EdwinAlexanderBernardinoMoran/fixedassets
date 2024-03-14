@@ -19,7 +19,7 @@ class ActivoFijoResource extends JsonResource
             'id' => $this->resource->id_activo_fijo,
             'attributes' => [
                 'codigo' => $this->resource->codigo,
-                'tipo_activo_id' => $this->resource->tipo_activo_id,
+                'tipo_activo' => $this->tipoactivo->nombre,
                 'descripcion' => $this->resource->descripcion,
             ],
             'links' => [

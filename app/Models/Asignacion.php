@@ -11,4 +11,17 @@ class Asignacion extends Model
 
     protected $table = 'asignaciones';
 
+    protected $primaryKey = 'id_activo_fijo';
+    public $incrementing = true;
+
+    public $timestamps = false;
+
+    public function persona(){
+        return $this->belongsTo(Personas::class, 'personas_id');
+    }
+
+    public function activofijo(){
+        return $this->belongsTo(ActivoFijo::class, 'activos_fijos_id');
+    }
+
 }
