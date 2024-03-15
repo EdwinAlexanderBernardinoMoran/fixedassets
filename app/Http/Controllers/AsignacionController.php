@@ -37,6 +37,7 @@ class AsignacionController extends Controller
                 $q->where('nombre', 'LIKE', "%{$request->activos}%");
             });
         }
+        return $query->toSql();
 
         return AsignacionResource::collection($query->get());
     }

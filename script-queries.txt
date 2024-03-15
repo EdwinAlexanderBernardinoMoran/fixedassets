@@ -1,0 +1,72 @@
+*********** Query para crear un nuevo activo fijo ***********
+insert into
+  activos_fijos (
+    codigo,
+    tipo_activo_id,
+    descripcion
+  )
+values
+  (
+    'VH2387',
+    4,
+    'Descripcion del activo fijo'
+  );
+
+
+
+
+
+*********** Query para consultar la información de un activo fijo por su código de activo ***********
+SELECT * FROM activos_fijos WHERE codigo LIKE '%nombre_del_codigo%' LIMIT 100
+
+
+
+
+
+
+
+***********  Query para consultar la información general de las asignaciones de los activos concernientes con persona, area de trabajo y activo. ***********
+
+select * from `asignaciones` where exists (select * from `personas` where `asignaciones`.`personas_id` = `personas`.`id_persona` and `nombres` LIKE '%nombre_persona%') and
+exists (select * from `personas` where `asignaciones`.`personas_id` = `personas`.`id_persona` and exists (select * from `areas_trabajo` where `personas`.`areas_trabajo_id` = `areas_trabajo`.`id_areas_trabajo` and `nombre` LIKE '%nombre_areatrabajo%')) and exists (select * from `activos_fijos` where `asignaciones`.`activos_fijos_id` = `activos_fijos`.`id_activo_fijo` and exists (select * from `tipo_activo` where `activos_fijos`.`tipo_activo_id` = `tipo_activo`.`id_tipo_activo` and `nombre` LIKE '%nombre_activo%'))
+
+
+
+
+
+***********  Query para Asignar un activo. ***********
+
+insert into
+  asignaciones (
+    personas_id,
+    activos_fijos_id
+  )
+values
+  (
+    2,
+    2
+  );
+
+insert into
+  historial_asignaciones (
+    fecha_asignacion,
+    personas_id,
+    activos_fijos_id
+  )
+values
+  (
+    '2024-03-14,
+    2,
+    2
+  );
+
+
+
+
+
+*********** Query para Eliminar una asignacion de activo. ***********
+
+delete from
+  asignaciones
+where
+  id_asignaciones = 1;
