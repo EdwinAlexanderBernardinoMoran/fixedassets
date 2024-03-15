@@ -112,10 +112,10 @@ DELETE ​/api​/v1/areatrabajos/{areatrabajo} Elimina un area de trabajo
 GET /api​/v1/activosfijos Muestra todas los activos fijos
 ```
 ```
-POST ​/api​/v1/activosfijos Almacena nuevas activos fijos activosfijos/codigo el filtro recibe el siguiente campo: codigo
+POST ​/api​/v1/activosfijos Almacena nuevas activos fijos
 ```
 ```
-POST ​/api​/v1/activosfijos/codigo filtro
+POST ​/api​/v1/activosfijos/codigo el filtro recibe el siguiente campo: codigo
 ```
 ```
 GET ​/api​/v1/activosfijos/{activosfijo} Muestra un activo fijo por identificacion
